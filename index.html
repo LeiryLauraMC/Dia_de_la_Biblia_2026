@@ -429,22 +429,54 @@
 
   <!-- STAT ROW -->
   <div class="stat-row">
-    <div class="stat"><strong>6</strong> grupos de decoración</div>
-    <div class="stat"><strong>23</strong> archivos para imprimir</div>
+    <div class="stat"><strong>7</strong> grupos de decoración</div>
+    <div class="stat"><strong>24</strong> archivos para imprimir</div>
     <div class="stat"><strong>1 nov</strong> Dia del evento</div>
   </div>
 
   <!-- SCROLL BODY -->
   <div class="body-scroll">
 
-    <!-- ─── 1. Línea de salida ─── -->
+    <!-- ─── 1. Invitación ─── -->
+    <div class="section" id="sec-invitacion">
+      <div class="section-header" onclick="toggleSection('sec-invitacion')">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 4 12 13 22 4"/></svg>
+        </div>
+        <span class="section-title">Invitación</span>
+        <span class="section-meta">Entrega al ingreso &bull; 1 archivo</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="section-body">
+        <div class="cards">
+          <div class="card">
+            <div class="card-img-wrap">
+              <img src="Tarjeta_de_invitacion.png" alt="Tarjeta de invitación" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Tarjeta_de_invitacion.png</span></div>'">
+            </div>
+            <div class="card-name">Tarjeta de invitación</div>
+            <div class="card-filename">Tarjeta_de_invitacion.png</div>
+            <div class="card-meta">
+              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Pequeño (6 por hoja carta)</span></div>
+              <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-normal">Papel normal</span></div>
+              <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">50 &ndash; 60 unidades</span></div>
+            </div>
+            <a class="btn-download" href="Tarjeta_de_invitacion.png" download>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Descargar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 2. Línea de salida ─── -->
     <div class="section" id="sec-linea">
       <div class="section-header" onclick="toggleSection('sec-linea')">
         <div class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
         </div>
         <span class="section-title">Línea de salida</span>
-        <span class="section-meta">Lobby &bull; 7 archivos</span>
+        <span class="section-meta">Entrada de la iglesia &bull; 7 archivos</span>
         <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="section-body">
@@ -652,16 +684,16 @@
         <div class="cards">
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Punto_de_hidratacion.png" alt="Punto de hidratación" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Punto_de_hidratacion.png</span></div>'">
+              <img src="Punto_de_hidratación.png" alt="Punto de hidratación" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Punto_de_hidratación.png</span></div>'">
             </div>
             <div class="card-name">Punto de hidratación</div>
-            <div class="card-filename">Punto_de_hidratacion.png</div>
+            <div class="card-filename">Punto_de_hidratación.png</div>
             <div class="card-meta">
               <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">2 m<sup>2</sup></span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
-            <a class="btn-download" href="Punto_de_hidratacion.png" download>
+            <a class="btn-download" href="Punto_de_hidratación.png" download>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Descargar
             </a>
@@ -896,7 +928,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M4 4h16v8H4zM4 18h16"/></svg>
         </div>
         <span class="section-title">Meta</span>
-        <span class="section-meta">Púlpito &bull; 1 archivo</span>
+        <span class="section-meta">Pulpito &bull; 1 archivo</span>
         <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="section-body">
