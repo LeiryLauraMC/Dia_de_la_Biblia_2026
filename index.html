@@ -1,37 +1,52 @@
-<!-- Design plan:
-  Layout: Grid de tarjetas agrupadas por sección, una sola pantalla sin scroll vertical (usando overflow oculto por grupo colapsable o vista compacta)
-  Colors: --bg (fondo claro cálido), --surface (tarjeta), --accent (dorado atletismo), --accent2 (azul pista), --fg (texto principal), --fg-muted (texto secundario)
-  Type: Barlow Condensed (display/etiquetas — espíritu deportivo), Lato (cuerpo — legible y limpio)
-  Note: Ley no quiere scroll; la página muestra todo agrupado por decoración con scroll interno por sección si hay muchos ítems.
-  GitHub base: https://leirylauramc.github.io/ (base asumida; archivos en la misma carpeta)
--->
-<title>La carrera de la fe</title>
-<meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Lato:wght@400;700&display=swap">
-<style>
-  /* ── Token system ─────────────────────────────────────── */
-  :root {
-    --bg:        #F7F4EE;
-    --surface:   #FFFFFF;
-    --surface2:  #EEE9DF;
-    --border:    #D9D2C4;
-    --accent:    #C4960A;   /* dorado trofeo */
-    --accent-lt: #F5E8B8;
-    --accent2:   #1B4F8A;   /* azul pista */
-    --accent2-lt:#D6E4F5;
-    --fg:        #1C1A15;
-    --fg-muted:  #6B6455;
-    --tag-paper-norm: #4A7C59;
-    --tag-paper-adh:  #8A3A2A;
-    --tag-paper-pro:  #1B4F8A;
-    --tag-nd:         #999188;
-    --radius:    8px;
-    --radius-sm: 5px;
-    color-scheme: light;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>La carrera de la fe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Lato:wght@400;700&display=swap">
+  <style>
+    /* ── Token system ─────────────────────────────────────── */
+    :root {
+      --bg:        #F7F4EE;
+      --surface:   #FFFFFF;
+      --surface2:  #EEE9DF;
+      --border:    #D9D2C4;
+      --accent:    #C4960A;
+      --accent-lt: #F5E8B8;
+      --accent2:   #1B4F8A;
+      --accent2-lt:#D6E4F5;
+      --fg:        #1C1A15;
+      --fg-muted:  #6B6455;
+      --tag-paper-norm: #4A7C59;
+      --tag-paper-adh:  #8A3A2A;
+      --tag-paper-pro:  #1B4F8A;
+      --tag-nd:         #999188;
+      --radius:    8px;
+      --radius-sm: 5px;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg:        #17140E;
+        --surface:   #231F17;
+        --surface2:  #2C2720;
+        --border:    #3D3828;
+        --accent:    #E3B230;
+        --accent-lt: #3A2E07;
+        --accent2:   #5B9BD5;
+        --accent2-lt:#152035;
+        --fg:        #F0EBE0;
+        --fg-muted:  #A09580;
+        --tag-paper-norm: #6DBF8A;
+        --tag-paper-adh:  #D97A63;
+        --tag-paper-pro:  #5B9BD5;
+        --tag-nd:         #888070;
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
       --bg:        #17140E;
       --surface:   #231F17;
       --surface2:  #2C2720;
@@ -48,528 +63,509 @@
       --tag-nd:         #888070;
       color-scheme: dark;
     }
-  }
-  :root[data-theme="dark"] {
-    --bg:        #17140E;
-    --surface:   #231F17;
-    --surface2:  #2C2720;
-    --border:    #3D3828;
-    --accent:    #E3B230;
-    --accent-lt: #3A2E07;
-    --accent2:   #5B9BD5;
-    --accent2-lt:#152035;
-    --fg:        #F0EBE0;
-    --fg-muted:  #A09580;
-    --tag-paper-norm: #6DBF8A;
-    --tag-paper-adh:  #D97A63;
-    --tag-paper-pro:  #5B9BD5;
-    --tag-nd:         #888070;
-    color-scheme: dark;
-  }
 
-  /* ── Reset / base ─────────────────────────────────────── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    height: 100%;
-    font-family: 'Lato', system-ui, sans-serif;
-    font-size: 14px;
-    background: var(--bg);
-    color: var(--fg);
-    overflow: hidden; /* sin scroll de página */
-  }
+    /* ── Reset / base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: 'Lato', system-ui, sans-serif;
+      font-size: 14px;
+      background: var(--bg);
+      color: var(--fg);
+      overflow: hidden;
+    }
 
-  /* ── Layout principal ─────────────────────────────────── */
-  .app {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding-left: max(16px, env(safe-area-inset-left, 0px));
-    padding-right: max(16px, env(safe-area-inset-right, 0px));
-    padding-block: 0;
-    overflow: hidden;
-  }
+    /* ── Layout principal ─────────────────────────────────── */
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding-left: max(16px, env(safe-area-inset-left, 0px));
+      padding-right: max(16px, env(safe-area-inset-right, 0px));
+      padding-block: 0;
+      overflow: hidden;
+    }
 
-  /* ── Header ───────────────────────────────────────────── */
-  .header {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 14px 0 10px;
-    border-bottom: 2px solid var(--accent);
-    flex-wrap: wrap;
-  }
-  .header-left { display: flex; align-items: center; gap: 14px; }
-  .header-stripe {
-    width: 5px;
-    height: 44px;
-    background: linear-gradient(to bottom, var(--accent), var(--accent2));
-    border-radius: 3px;
-    flex-shrink: 0;
-  }
-  .header h1 {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.65rem;
-    font-weight: 900;
-    letter-spacing: 0.02em;
-    color: var(--fg);
-    text-wrap: balance;
-    line-height: 1.1;
-  }
-  .header h1 span {
-    display: block;
-    font-size: 0.78rem;
-    font-weight: 400;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--fg-muted);
-  }
-  .header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .btn-photobooth {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 7px 16px;
-    background: var(--accent2);
-    color: #fff;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: var(--radius-sm);
-    transition: opacity .15s;
-  }
-  .btn-photobooth:hover { opacity: .85; }
-  .btn-photobooth svg { width: 15px; height: 15px; flex-shrink: 0; }
+    /* ── Header ───────────────────────────────────────────── */
+    .header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 0 10px;
+      border-bottom: 2px solid var(--accent);
+      flex-wrap: wrap;
+    }
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .header-stripe {
+      width: 5px;
+      height: 44px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2));
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      color: var(--fg);
+      text-wrap: balance;
+      line-height: 1.1;
+    }
+    .header h1 span {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+    .header-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .btn-photobooth {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 16px;
+      background: var(--accent2);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: opacity .15s;
+    }
+    .btn-photobooth:hover { opacity: .85; }
+    .btn-photobooth svg { width: 15px; height: 15px; flex-shrink: 0; }
 
-  /* ── Stat row ─────────────────────────────────────────── */
-  .stat-row {
-    flex-shrink: 0;
-    display: flex;
-    gap: 8px;
-    padding: 9px 0 8px;
-    flex-wrap: wrap;
-  }
-  .stat {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--surface2);
-    border-radius: var(--radius-sm);
-    padding: 4px 11px 4px 8px;
-    font-size: 0.78rem;
-    color: var(--fg-muted);
-    border: 1px solid var(--border);
-  }
-  .stat strong {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--accent);
-    font-variant-numeric: tabular-nums;
-  }
+    /* ── Stat row ─────────────────────────────────────────── */
+    .stat-row {
+      flex-shrink: 0;
+      display: flex;
+      gap: 8px;
+      padding: 9px 0 8px;
+      flex-wrap: wrap;
+    }
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface2);
+      border-radius: var(--radius-sm);
+      padding: 4px 11px 4px 8px;
+      font-size: 0.78rem;
+      color: var(--fg-muted);
+      border: 1px solid var(--border);
+    }
+    .stat strong {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
 
-  /* ── Scroll body ──────────────────────────────────────── */
-  .body-scroll {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
-  }
+    /* ── Scroll body ──────────────────────────────────────── */
+    .body-scroll {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    }
 
-  /* ── Section ──────────────────────────────────────────── */
-  .section {
-    margin-bottom: 14px;
-  }
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 8px 12px;
-    background: var(--surface2);
-    border-radius: var(--radius) var(--radius) 0 0;
-    border: 1px solid var(--border);
-    border-bottom: none;
-    cursor: pointer;
-    user-select: none;
-  }
-  .section-header:hover { filter: brightness(0.97); }
-  .section-icon {
-    width: 28px;
-    height: 28px;
-    background: var(--accent-lt);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .section-icon svg { width: 15px; height: 15px; }
-  .section-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.0rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--fg);
-    flex: 1;
-    min-width: 0;
-  }
-  .section-meta {
-    font-size: 0.73rem;
-    color: var(--fg-muted);
-    white-space: nowrap;
-  }
-  .section-chevron {
-    width: 18px;
-    height: 18px;
-    color: var(--fg-muted);
-    transition: transform .2s;
-    flex-shrink: 0;
-  }
-  .section.collapsed .section-chevron { transform: rotate(-90deg); }
+    /* ── Section ──────────────────────────────────────────── */
+    .section {
+      margin-bottom: 14px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      background: var(--surface2);
+      border-radius: var(--radius) var(--radius) 0 0;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      cursor: pointer;
+      user-select: none;
+    }
+    .section-header:hover { filter: brightness(0.97); }
+    .section-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent-lt);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-icon svg { width: 15px; height: 15px; }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.0rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fg);
+      flex: 1;
+      min-width: 0;
+    }
+    .section-meta {
+      font-size: 0.73rem;
+      color: var(--fg-muted);
+      white-space: nowrap;
+    }
+    .section-chevron {
+      width: 18px;
+      height: 18px;
+      color: var(--fg-muted);
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    .section.collapsed .section-chevron { transform: rotate(-90deg); }
 
-  .section-body {
-    border: 1px solid var(--border);
-    border-top: none;
-    border-radius: 0 0 var(--radius) var(--radius);
-    background: var(--surface);
-    overflow: hidden;
-  }
-  .section.collapsed .section-body { display: none; }
+    .section-body {
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      background: var(--surface);
+      overflow: hidden;
+    }
+    .section.collapsed .section-body { display: none; }
 
-  /* ── Cards grid ───────────────────────────────────────── */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1px;
-    background: var(--border);
-  }
-  .card {
-    background: var(--surface);
-    padding: 12px 14px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+    /* ── Cards grid ───────────────────────────────────────── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
+    .card {
+      background: var(--surface);
+      padding: 12px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-  .card-img-wrap {
-    width: 100%;
-    aspect-ratio: 4/3;
-    background: var(--surface2);
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-  .card-img-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .card-img-placeholder {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    color: var(--fg-muted);
-    font-size: 0.7rem;
-    text-align: center;
-    padding: 8px;
-  }
-  .card-img-placeholder svg { width: 28px; height: 28px; opacity: .4; }
+    .card-img-wrap {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: var(--surface2);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .card-img-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--fg-muted);
+      font-size: 0.7rem;
+      text-align: center;
+      padding: 8px;
+    }
+    .card-img-placeholder svg { width: 28px; height: 28px; opacity: .4; }
 
-  .card-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    color: var(--fg);
-    line-height: 1.2;
-  }
-  .card-filename {
-    font-size: 0.7rem;
-    color: var(--fg-muted);
-    font-family: 'Lato', monospace;
-    word-break: break-all;
-  }
+    .card-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: var(--fg);
+      line-height: 1.2;
+    }
+    .card-filename {
+      font-size: 0.7rem;
+      color: var(--fg-muted);
+      font-family: 'Lato', monospace;
+      word-break: break-all;
+    }
 
-  .card-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-  .meta-row {
-    display: flex;
-    align-items: baseline;
-    gap: 4px;
-    width: 100%;
-  }
-  .meta-label {
-    font-size: 0.67rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--fg-muted);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .meta-value {
-    font-size: 0.78rem;
-    color: var(--fg);
-  }
-  .meta-value.nd { color: var(--fg-muted); font-style: italic; }
+    .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .meta-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      width: 100%;
+    }
+    .meta-label {
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .meta-value {
+      font-size: 0.78rem;
+      color: var(--fg);
+    }
+    .meta-value.nd { color: var(--fg-muted); font-style: italic; }
 
-  /* paper tags */
-  .tag {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .tag-propalcote { background: var(--accent2-lt); color: var(--accent2); }
-  .tag-adhesivo   { background: #FCE8E3; color: var(--tag-paper-adh); }
-  .tag-normal     { background: #E3F0E8; color: var(--tag-paper-norm); }
-  .tag-nd         { background: var(--surface2); color: var(--tag-nd); border: 1px solid var(--border); }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .tag-adhesivo { background: #3A1810; color: var(--tag-paper-adh); }
-    :root:not([data-theme="light"]) .tag-normal   { background: #16301E; color: var(--tag-paper-norm); }
-  }
-  :root[data-theme="dark"] .tag-adhesivo { background: #3A1810; color: var(--tag-paper-adh); }
-  :root[data-theme="dark"] .tag-normal   { background: #16301E; color: var(--tag-paper-norm); }
+    /* paper tags */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .tag-propalcote { background: var(--accent2-lt); color: var(--accent2); }
+    .tag-adhesivo   { background: #FCE8E3; color: var(--tag-paper-adh); }
+    .tag-normal     { background: #E3F0E8; color: var(--tag-paper-norm); }
+    .tag-nd         { background: var(--surface2); color: var(--tag-nd); border: 1px solid var(--border); }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .tag-adhesivo { background: #3A1810; color: var(--tag-paper-adh); }
+      :root:not([data-theme="light"]) .tag-normal   { background: #16301E; color: var(--tag-paper-norm); }
+    }
+    :root[data-theme="dark"] .tag-adhesivo { background: #3A1810; color: var(--tag-paper-adh); }
+    :root[data-theme="dark"] .tag-normal   { background: #16301E; color: var(--tag-paper-norm); }
 
-  /* cantidad badge */
-  .qty-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--accent-lt);
-    color: var(--accent);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
-    padding: 2px 9px;
-    border-radius: 20px;
-    border: 1px solid var(--accent);
-  }
+    /* cantidad badge */
+    .qty-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--accent-lt);
+      color: var(--accent);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 20px;
+      border: 1px solid var(--accent);
+    }
 
-  /* download button */
-  .btn-download {
-    margin-top: auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    width: 100%;
-    padding: 7px 0;
-    background: var(--accent);
-    color: #fff;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border: none;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    text-decoration: none;
-    transition: opacity .15s;
-  }
-  .btn-download:hover { opacity: .82; }
-  .btn-download svg { width: 14px; height: 14px; flex-shrink: 0; }
+    /* download button */
+    .btn-download {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 7px 0;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity .15s;
+    }
+    .btn-download:hover { opacity: .82; }
+    .btn-download svg { width: 14px; height: 14px; flex-shrink: 0; }
 
-  /* ── PDF section ─────────────────────────────────── */
-  .pdf-section {
-    margin-bottom: 14px;
-  }
-  .pdf-section-header {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 8px 12px;
-    background: linear-gradient(135deg, var(--accent2-lt), var(--surface2));
-    border-radius: var(--radius) var(--radius) 0 0;
-    border: 1px solid var(--accent2);
-    border-bottom: none;
-    cursor: pointer;
-    user-select: none;
-  }
-  .pdf-section-header:hover { filter: brightness(0.97); }
-  .pdf-section-icon {
-    width: 28px;
-    height: 28px;
-    background: var(--accent2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .pdf-section-icon svg { width: 15px; height: 15px; }
-  .pdf-section-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.0rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--accent2);
-    flex: 1;
-    min-width: 0;
-  }
-  .pdf-section-body {
-    border: 1px solid var(--accent2);
-    border-top: none;
-    border-radius: 0 0 var(--radius) var(--radius);
-    background: var(--surface);
-    overflow: hidden;
-    padding: 14px;
-  }
-  .pdf-section.collapsed .pdf-section-body { display: none; }
-  .pdf-section.collapsed .section-chevron { transform: rotate(-90deg); }
+    /* ── PDF section ──────────────────────────────────────── */
+    .pdf-section {
+      margin-bottom: 14px;
+    }
+    .pdf-section-header {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      background: linear-gradient(135deg, var(--accent2-lt), var(--surface2));
+      border-radius: var(--radius) var(--radius) 0 0;
+      border: 1px solid var(--accent2);
+      border-bottom: none;
+      cursor: pointer;
+      user-select: none;
+    }
+    .pdf-section-header:hover { filter: brightness(0.97); }
+    .pdf-section-icon {
+      width: 28px;
+      height: 28px;
+      background: var(--accent2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .pdf-section-icon svg { width: 15px; height: 15px; }
+    .pdf-section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.0rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      flex: 1;
+      min-width: 0;
+    }
+    .pdf-section-body {
+      border: 1px solid var(--accent2);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      background: var(--surface);
+      overflow: hidden;
+      padding: 14px;
+    }
+    .pdf-section.collapsed .pdf-section-body { display: none; }
+    .pdf-section.collapsed .section-chevron { transform: rotate(-90deg); }
 
-  .pdf-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-  }
-  .pdf-card {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px 14px;
-  }
-  .pdf-card-top {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .pdf-icon-wrap {
-    width: 36px;
-    height: 44px;
-    flex-shrink: 0;
-    background: #E8F0FB;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #C0D4EF;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .pdf-icon-wrap { background: #152035; border-color: #1e3a5f; }
-  }
-  :root[data-theme="dark"] .pdf-icon-wrap { background: #152035; border-color: #1e3a5f; }
-  .pdf-icon-wrap svg { width: 20px; height: 20px; }
-  .pdf-card-info { flex: 1; min-width: 0; }
-  .pdf-card-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.92rem;
-    font-weight: 700;
-    color: var(--fg);
-    line-height: 1.2;
-    margin-bottom: 2px;
-  }
-  .pdf-card-filename {
-    font-size: 0.68rem;
-    color: var(--fg-muted);
-    word-break: break-all;
-  }
-  .pdf-card-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.67rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--accent2);
-    background: var(--accent2-lt);
-    padding: 2px 8px;
-    border-radius: 20px;
-    width: fit-content;
-  }
-  .pdf-card-actions {
-    display: flex;
-    gap: 6px;
-    margin-top: 2px;
-  }
-  .btn-pdf-download {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    padding: 6px 0;
-    background: var(--accent2);
-    color: #fff;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    transition: opacity .15s;
-  }
-  .btn-pdf-download:hover { opacity: .82; }
-  .btn-pdf-download svg { width: 13px; height: 13px; flex-shrink: 0; }
-  .btn-armado {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    padding: 6px 10px;
-    background: var(--accent-lt);
-    color: var(--accent);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    border: 1px solid var(--accent);
-    transition: opacity .15s;
-    white-space: nowrap;
-  }
-  .btn-armado:hover { opacity: .82; }
-  .btn-armado svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .pdf-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .pdf-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .pdf-card-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .pdf-icon-wrap {
+      width: 36px;
+      height: 44px;
+      flex-shrink: 0;
+      background: #E8F0FB;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #C0D4EF;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .pdf-icon-wrap { background: #152035; border-color: #1e3a5f; }
+    }
+    :root[data-theme="dark"] .pdf-icon-wrap { background: #152035; border-color: #1e3a5f; }
+    .pdf-icon-wrap svg { width: 20px; height: 20px; }
+    .pdf-card-info { flex: 1; min-width: 0; }
+    .pdf-card-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--fg);
+      line-height: 1.2;
+      margin-bottom: 2px;
+    }
+    .pdf-card-filename {
+      font-size: 0.68rem;
+      color: var(--fg-muted);
+      word-break: break-all;
+    }
+    .pdf-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      background: var(--accent2-lt);
+      padding: 2px 8px;
+      border-radius: 20px;
+      width: fit-content;
+    }
+    .pdf-card-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .btn-pdf-download {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 6px 0;
+      background: var(--accent2);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: opacity .15s;
+    }
+    .btn-pdf-download:hover { opacity: .82; }
+    .btn-pdf-download svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .btn-armado {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 6px 10px;
+      background: var(--accent-lt);
+      color: var(--accent);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      transition: opacity .15s;
+      white-space: nowrap;
+    }
+    .btn-armado:hover { opacity: .82; }
+    .btn-armado svg { width: 13px; height: 13px; flex-shrink: 0; }
 
-  @media (max-width: 480px) {
-    .pdf-grid { grid-template-columns: 1fr; }
-  }
+    /* ── Footer ───────────────────────────────────────────── */
+    .footer {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 7px 0 max(10px, env(safe-area-inset-bottom, 0px));
+      font-size: 0.68rem;
+      color: var(--fg-muted);
+      border-top: 1px solid var(--border);
+      letter-spacing: 0.04em;
+    }
 
-  /* ── Footer ───────────────────────────────────────────── */
-  .footer {
-    flex-shrink: 0;
-    text-align: center;
-    padding: 7px 0 max(10px, env(safe-area-inset-bottom, 0px));
-    font-size: 0.68rem;
-    color: var(--fg-muted);
-    border-top: 1px solid var(--border);
-    letter-spacing: 0.04em;
-  }
-
-  @media (max-width: 480px) {
-    .header h1 { font-size: 1.25rem; }
-    .cards { grid-template-columns: 1fr 1fr; }
-    .btn-photobooth { font-size: 0.78rem; padding: 6px 12px; }
-  }
-</style>
+    @media (max-width: 480px) {
+      .header h1 { font-size: 1.25rem; }
+      .cards { grid-template-columns: 1fr 1fr; }
+      .btn-photobooth { font-size: 0.78rem; padding: 6px 12px; }
+      .pdf-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
 
 <div class="app">
 
@@ -578,7 +574,7 @@
     <div class="header-left">
       <div class="header-stripe"></div>
       <h1>
-        <span>Dia de la Biblia 2026 &mdash; Iglesia Goséen</span>
+        <span>Dia de la Biblia 2026 &mdash; Iglesia Gos&eacute;n</span>
         La carrera de la fe
       </h1>
     </div>
@@ -592,7 +588,7 @@
 
   <!-- STAT ROW -->
   <div class="stat-row">
-    <div class="stat"><strong>7</strong> grupos de decoración</div>
+    <div class="stat"><strong>7</strong> grupos de decoraci&oacute;n</div>
     <div class="stat"><strong>24</strong> archivos para imprimir</div>
     <div class="stat"><strong>1 nov</strong> Dia del evento</div>
   </div>
@@ -606,7 +602,7 @@
         <div class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 4 12 13 22 4"/></svg>
         </div>
-        <span class="section-title">Invitación</span>
+        <span class="section-title">Invitaci&oacute;n</span>
         <span class="section-meta">Entrega previa &bull; 1 archivo</span>
         <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
@@ -614,12 +610,12 @@
         <div class="cards">
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Tarjeta_de_invitacion.png" alt="Tarjeta de invitación" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Tarjeta_de_invitacion.png</span></div>'">
+              <img src="Tarjeta_de_invitacion.png" alt="Tarjeta de invitaci&oacute;n" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Tarjeta_de_invitacion.png</span></div>'">
             </div>
-            <div class="card-name">Tarjeta de invitación</div>
+            <div class="card-name">Tarjeta de invitaci&oacute;n</div>
             <div class="card-filename">Tarjeta_de_invitacion.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Pequeño (6 por hoja carta)</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Peque&ntilde;o (6 por hoja carta)</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-normal">Papel normal</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">50 &ndash; 60 unidades</span></div>
             </div>
@@ -638,7 +634,7 @@
         <div class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
         </div>
-        <span class="section-title">Línea de salida</span>
+        <span class="section-title">L&iacute;nea de salida</span>
         <span class="section-meta">Entrada de la iglesia &bull; 7 archivos</span>
         <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
@@ -646,12 +642,12 @@
         <div class="cards">
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Linea_de_salida.png" alt="Línea de salida" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Linea_de_salida.png</span></div>'">
+              <img src="Linea_de_salida.png" alt="L&iacute;nea de salida" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Linea_de_salida.png</span></div>'">
             </div>
-            <div class="card-name">Línea de salida</div>
+            <div class="card-name">L&iacute;nea de salida</div>
             <div class="card-filename">Linea_de_salida.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">2 m<sup>2</sup></span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">2 m<sup>2</sup></span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -663,12 +659,12 @@
           <!-- Señal - Fe -->
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Fe_lobby.png" alt="Señal - Fe" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Fe_lobby.png</span></div>'">
+              <img src="Fe_lobby.png" alt="Se&ntilde;al - Fe" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Fe_lobby.png</span></div>'">
             </div>
-            <div class="card-name">Señal - Fe</div>
+            <div class="card-name">Se&ntilde;al - Fe</div>
             <div class="card-filename">Fe_lobby.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Carta</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Carta</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -680,12 +676,12 @@
           <!-- Señal - Palabra de Dios -->
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Palabra_de_Dios_lobby.png" alt="Señal - Palabra de Dios" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Palabra_de_Dios_lobby.png</span></div>'">
+              <img src="Palabra_de_Dios_lobby.png" alt="Se&ntilde;al - Palabra de Dios" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Palabra_de_Dios_lobby.png</span></div>'">
             </div>
-            <div class="card-name">Señal - Palabra de Dios</div>
+            <div class="card-name">Se&ntilde;al - Palabra de Dios</div>
             <div class="card-filename">Palabra_de_Dios_lobby.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Carta</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Carta</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -697,12 +693,12 @@
           <!-- Señal - Obstáculos -->
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Obstaculos_lobby.png" alt="Señal - Obstáculos" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Obstaculos_lobby.png</span></div>'">
+              <img src="Obstaculos_lobby.png" alt="Se&ntilde;al - Obst&aacute;culos" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Obstaculos_lobby.png</span></div>'">
             </div>
-            <div class="card-name">Señal - Obstáculos</div>
+            <div class="card-name">Se&ntilde;al - Obst&aacute;culos</div>
             <div class="card-filename">Obstaculos_lobby.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Carta</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Carta</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -714,12 +710,12 @@
           <!-- Señal - Compañeros -->
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Companeros_lobby.png" alt="Señal - Compañeros" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Companeros_lobby.png</span></div>'">
+              <img src="Companeros_lobby.png" alt="Se&ntilde;al - Compa&ntilde;eros" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Companeros_lobby.png</span></div>'">
             </div>
-            <div class="card-name">Señal - Compañeros</div>
+            <div class="card-name">Se&ntilde;al - Compa&ntilde;eros</div>
             <div class="card-filename">Companeros_lobby.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Carta</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Carta</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -731,12 +727,12 @@
           <!-- Señal - Perseverancia -->
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Perseverancia_lobby.png" alt="Señal - Perseverancia" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Perseverancia_lobby.png</span></div>'">
+              <img src="Perseverancia_lobby.png" alt="Se&ntilde;al - Perseverancia" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Perseverancia_lobby.png</span></div>'">
             </div>
-            <div class="card-name">Señal - Perseverancia</div>
+            <div class="card-name">Se&ntilde;al - Perseverancia</div>
             <div class="card-filename">Perseverancia_lobby.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Carta</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Carta</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -748,12 +744,12 @@
           <!-- Señal - Meta -->
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Meta_lobby.png" alt="Señal - Meta" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Meta_lobby.png</span></div>'">
+              <img src="Meta_lobby.png" alt="Se&ntilde;al - Meta" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Meta_lobby.png</span></div>'">
             </div>
-            <div class="card-name">Señal - Meta</div>
+            <div class="card-name">Se&ntilde;al - Meta</div>
             <div class="card-filename">Meta_lobby.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Carta</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Carta</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -766,7 +762,7 @@
       </div>
     </div>
 
-    <!-- ─── 2. Props ─── -->
+    <!-- ─── 3. Props ─── -->
     <div class="section" id="sec-props">
       <div class="section-header" onclick="toggleSection('sec-props')">
         <div class="section-icon">
@@ -778,7 +774,6 @@
       </div>
       <div class="section-body">
         <div class="cards">
-          <!-- Prop 1 -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Prop1.png" alt="Prop 1" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Prop1.png</span></div>'">
@@ -786,7 +781,7 @@
             <div class="card-name">Prop 1</div>
             <div class="card-filename">Prop1.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Carta</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Carta</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -795,7 +790,6 @@
               Descargar
             </a>
           </div>
-          <!-- Prop 2 -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Prop2.png" alt="Prop 2" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Prop2.png</span></div>'">
@@ -803,7 +797,7 @@
             <div class="card-name">Prop 2</div>
             <div class="card-filename">Prop2.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Carta</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Carta</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -812,7 +806,6 @@
               Descargar
             </a>
           </div>
-          <!-- Prop 3 -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Prop3.png" alt="Prop 3" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Prop3.png</span></div>'">
@@ -820,7 +813,7 @@
             <div class="card-name">Prop 3</div>
             <div class="card-filename">Prop3.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Carta</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Carta</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -833,13 +826,13 @@
       </div>
     </div>
 
-    <!-- ─── 3. Punto de hidratación ─── -->
-    <div class="section" id="sec-hidratación">
-      <div class="section-header" onclick="toggleSection('sec-hidratación')">
+    <!-- ─── 4. Punto de hidratación ─── -->
+    <div class="section" id="sec-hidratacion">
+      <div class="section-header" onclick="toggleSection('sec-hidratacion')">
         <div class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
         </div>
-        <span class="section-title">Punto de hidratación</span>
+        <span class="section-title">Punto de hidrataci&oacute;n</span>
         <span class="section-meta">Mesa de recordatorios &bull; 4 archivos</span>
         <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
@@ -847,12 +840,12 @@
         <div class="cards">
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Punto_de_hidratacion.png" alt="Punto de hidratación" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Punto_de_hidratacion.png</span></div>'">
+              <img src="Punto_de_hidratacion.png" alt="Punto de hidrataci&oacute;n" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Punto_de_hidratacion.png</span></div>'">
             </div>
-            <div class="card-name">Punto de hidratación</div>
+            <div class="card-name">Punto de hidrataci&oacute;n</div>
             <div class="card-filename">Punto_de_hidratacion.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">2 m<sup>2</sup></span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">2 m<sup>2</sup></span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -861,7 +854,6 @@
               Descargar
             </a>
           </div>
-          <!-- Stickers para recordatorios -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Stickers_para_recordatorios.png" alt="Stickers para recordatorios" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Stickers_para_recordatorios.png</span></div>'">
@@ -869,7 +861,7 @@
             <div class="card-name">Stickers para recordatorios</div>
             <div class="card-filename">Stickers_para_recordatorios.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Pequeño</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Peque&ntilde;o</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-adhesivo">Papel adhesivo</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">50 &ndash; 60 unidades</span></div>
             </div>
@@ -878,7 +870,6 @@
               Descargar
             </a>
           </div>
-          <!-- Medalla para recordatorios -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Medalla_para_recordatorios.png" alt="Medalla para recordatorios" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Medalla_para_recordatorios.png</span></div>'">
@@ -886,7 +877,7 @@
             <div class="card-name">Medalla para recordatorios</div>
             <div class="card-filename">Medalla_para_recordatorios.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Pequeño</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Peque&ntilde;o</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">50 &ndash; 60 unidades</span></div>
             </div>
@@ -895,7 +886,6 @@
               Descargar
             </a>
           </div>
-          <!-- Identificador de atleta -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Identificador_de_atleta.png" alt="Identificador de atleta" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Identificador_de_atleta.png</span></div>'">
@@ -903,7 +893,7 @@
             <div class="card-name">Identificador de atleta</div>
             <div class="card-filename">Identificador_de_atleta.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Pequeño (4 por hoja carta)</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Peque&ntilde;o (4 por hoja carta)</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-adhesivo">Papel adhesivo</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">50 &ndash; 60 unidades</span></div>
             </div>
@@ -916,19 +906,18 @@
       </div>
     </div>
 
-    <!-- ─── 4. Decoración para teatrino ─── -->
+    <!-- ─── 5. Decoración para teatrino ─── -->
     <div class="section" id="sec-teatrino">
       <div class="section-header" onclick="toggleSection('sec-teatrino')">
         <div class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M2 20h20M4 20V8a2 2 0 012-2h4l2-3 2 3h4a2 2 0 012 2v12"/><rect x="9" y="13" width="6" height="7"/></svg>
         </div>
-        <span class="section-title">Decoración para teatrino</span>
+        <span class="section-title">Decoraci&oacute;n para teatrino</span>
         <span class="section-meta">Teatrino &bull; 5 archivos</span>
         <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="section-body">
         <div class="cards">
-          <!-- Teatro -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Teatro.png" alt="Teatro" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Teatro.png</span></div>'">
@@ -936,7 +925,7 @@
             <div class="card-name">Teatro</div>
             <div class="card-filename">Teatro.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Mediano</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Mediano</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-normal">Papel normal</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -945,7 +934,6 @@
               Descargar
             </a>
           </div>
-          <!-- Caretas -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Caretas.png" alt="Caretas" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Caretas.png</span></div>'">
@@ -953,7 +941,7 @@
             <div class="card-name">Caretas</div>
             <div class="card-filename">Caretas.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Mediano</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Mediano</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-normal">Papel normal</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -962,7 +950,6 @@
               Descargar
             </a>
           </div>
-          <!-- Cine -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Cine.png" alt="Cine" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Cine.png</span></div>'">
@@ -970,7 +957,7 @@
             <div class="card-name">Cine</div>
             <div class="card-filename">Cine.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Mediano</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Mediano</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-normal">Papel normal</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -979,7 +966,6 @@
               Descargar
             </a>
           </div>
-          <!-- Estrella dorada -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Estrella_dorada.png" alt="Estrella dorada" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Estrella_dorada.png</span></div>'">
@@ -987,7 +973,7 @@
             <div class="card-name">Estrella dorada</div>
             <div class="card-filename">Estrella_dorada.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Pequeño</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Peque&ntilde;o</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-normal">Papel normal</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">6 unidades</span></div>
             </div>
@@ -996,7 +982,6 @@
               Descargar
             </a>
           </div>
-          <!-- Estrella roja -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Estrella_roja.png" alt="Estrella roja" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Estrella_roja.png</span></div>'">
@@ -1004,7 +989,7 @@
             <div class="card-name">Estrella roja</div>
             <div class="card-filename">Estrella_roja.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Pequeño</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Peque&ntilde;o</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-normal">Papel normal</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -1017,19 +1002,18 @@
       </div>
     </div>
 
-    <!-- ─── 5. Decoración para globos ─── -->
+    <!-- ─── 6. Decoración para globos ─── -->
     <div class="section" id="sec-globos">
       <div class="section-header" onclick="toggleSection('sec-globos')">
         <div class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="9" rx="6" ry="7"/><path d="M12 16v5M10 21h4"/></svg>
         </div>
-        <span class="section-title">Decoración para globos</span>
+        <span class="section-title">Decoraci&oacute;n para globos</span>
         <span class="section-meta">Globos &bull; 3 archivos</span>
         <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="section-body">
         <div class="cards">
-          <!-- Trofeos globos -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Trofeos_globos.png" alt="Trofeos globos" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Trofeos_globos.png</span></div>'">
@@ -1037,16 +1021,15 @@
             <div class="card-name">Trofeos globos</div>
             <div class="card-filename">Trofeos_globos.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Normal / mediano</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Normal / mediano</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-normal">Papel normal</span></div>
-              <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">Según decorador</span></div>
+              <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">Seg&uacute;n decorador</span></div>
             </div>
             <a class="btn-download" href="Trofeos_globos.png" download>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Descargar
             </a>
           </div>
-          <!-- Medallas globos -->
           <div class="card">
             <div class="card-img-wrap">
               <img src="Medallas_globos.png" alt="Medallas globos" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Medallas_globos.png</span></div>'">
@@ -1054,26 +1037,25 @@
             <div class="card-name">Medallas globos</div>
             <div class="card-filename">Medallas_globos.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Normal / mediano</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Normal / mediano</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-normal">Papel normal</span></div>
-              <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">Según decorador</span></div>
+              <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">Seg&uacute;n decorador</span></div>
             </div>
             <a class="btn-download" href="Medallas_globos.png" download>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Descargar
             </a>
           </div>
-          <!-- Niños globos -->
           <div class="card">
             <div class="card-img-wrap">
-              <img src="Ninos_globos.png" alt="Niños globos" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Ninos_globos.png</span></div>'">
+              <img src="Ninos_globos.png" alt="Ni&ntilde;os globos" onerror="this.parentElement.innerHTML='<div class=\'card-img-placeholder\'><svg viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1.5\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><polyline points=\'21 15 16 10 5 21\'/></svg><span>Ninos_globos.png</span></div>'">
             </div>
-            <div class="card-name">Niños globos</div>
+            <div class="card-name">Ni&ntilde;os globos</div>
             <div class="card-filename">Ninos_globos.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">Normal / mediano</span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">Normal / mediano</span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-normal">Papel normal</span></div>
-              <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">Según decorador</span></div>
+              <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">Seg&uacute;n decorador</span></div>
             </div>
             <a class="btn-download" href="Ninos_globos.png" download>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -1084,7 +1066,7 @@
       </div>
     </div>
 
-    <!-- ─── 6. Meta ─── -->
+    <!-- ─── 7. Meta ─── -->
     <div class="section" id="sec-meta">
       <div class="section-header" onclick="toggleSection('sec-meta')">
         <div class="section-icon">
@@ -1103,7 +1085,7 @@
             <div class="card-name">Meta</div>
             <div class="card-filename">Meta.png</div>
             <div class="card-meta">
-              <div class="meta-row"><span class="meta-label">Tamaño</span><span class="meta-value">2 m<sup>2</sup></span></div>
+              <div class="meta-row"><span class="meta-label">Tama&ntilde;o</span><span class="meta-value">2 m<sup>2</sup></span></div>
               <div class="meta-row"><span class="meta-label">Papel</span><span class="tag tag-propalcote">Propalcote</span></div>
               <div class="meta-row"><span class="meta-label">Cantidad</span><span class="qty-badge">1 unidad</span></div>
             </div>
@@ -1116,7 +1098,7 @@
       </div>
     </div>
 
-    <!-- ─── 7. PDFs listos para imprimir ─── -->
+    <!-- ─── PDFs listos para imprimir ─── -->
     <div class="pdf-section" id="sec-pdfs">
       <div class="pdf-section-header" onclick="toggleSection('sec-pdfs')">
         <div class="pdf-section-icon">
@@ -1136,7 +1118,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               </div>
               <div class="pdf-card-info">
-                <div class="pdf-card-name">Línea de salida</div>
+                <div class="pdf-card-name">L&iacute;nea de salida</div>
                 <div class="pdf-card-filename">Linea_de_salida.pdf</div>
               </div>
             </div>
@@ -1160,7 +1142,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
               </div>
               <div class="pdf-card-info">
-                <div class="pdf-card-name">Punto de hidratación</div>
+                <div class="pdf-card-name">Punto de hidrataci&oacute;n</div>
                 <div class="pdf-card-filename">Punto_de_hidratacion.pdf</div>
               </div>
             </div>
@@ -1246,7 +1228,7 @@
   </div><!-- /body-scroll -->
 
   <footer class="footer">
-    Iglesia Goséen &mdash; Dia de la Biblia 2026 &mdash; La carrera de la fe &mdash; 1 de noviembre
+    Iglesia Gos&eacute;n &mdash; Dia de la Biblia 2026 &mdash; La carrera de la fe &mdash; 1 de noviembre
   </footer>
 
 </div><!-- /app -->
@@ -1256,8 +1238,7 @@
     const sec = document.getElementById(id);
     sec.classList.toggle('collapsed');
   }
-
-  // Note sobre descarga: los botones de descarga requieren que los archivos estén
-  // en la misma carpeta que este HTML en GitHub Pages para funcionar correctamente.
-  // El atributo `download` solo activa la descarga directa desde el mismo origen.
 </script>
+
+</body>
+</html>
