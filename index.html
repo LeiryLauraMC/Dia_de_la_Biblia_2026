@@ -390,6 +390,169 @@
   .btn-download:hover { opacity: .82; }
   .btn-download svg { width: 14px; height: 14px; flex-shrink: 0; }
 
+  /* ── PDF section ─────────────────────────────────── */
+  .pdf-section {
+    margin-bottom: 14px;
+  }
+  .pdf-section-header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 12px;
+    background: linear-gradient(135deg, var(--accent2-lt), var(--surface2));
+    border-radius: var(--radius) var(--radius) 0 0;
+    border: 1px solid var(--accent2);
+    border-bottom: none;
+    cursor: pointer;
+    user-select: none;
+  }
+  .pdf-section-header:hover { filter: brightness(0.97); }
+  .pdf-section-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--accent2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .pdf-section-icon svg { width: 15px; height: 15px; }
+  .pdf-section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.0rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    flex: 1;
+    min-width: 0;
+  }
+  .pdf-section-body {
+    border: 1px solid var(--accent2);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: var(--surface);
+    overflow: hidden;
+    padding: 14px;
+  }
+  .pdf-section.collapsed .pdf-section-body { display: none; }
+  .pdf-section.collapsed .section-chevron { transform: rotate(-90deg); }
+
+  .pdf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .pdf-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+  }
+  .pdf-card-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .pdf-icon-wrap {
+    width: 36px;
+    height: 44px;
+    flex-shrink: 0;
+    background: #E8F0FB;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #C0D4EF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .pdf-icon-wrap { background: #152035; border-color: #1e3a5f; }
+  }
+  :root[data-theme="dark"] .pdf-icon-wrap { background: #152035; border-color: #1e3a5f; }
+  .pdf-icon-wrap svg { width: 20px; height: 20px; }
+  .pdf-card-info { flex: 1; min-width: 0; }
+  .pdf-card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--fg);
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .pdf-card-filename {
+    font-size: 0.68rem;
+    color: var(--fg-muted);
+    word-break: break-all;
+  }
+  .pdf-card-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    background: var(--accent2-lt);
+    padding: 2px 8px;
+    border-radius: 20px;
+    width: fit-content;
+  }
+  .pdf-card-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 2px;
+  }
+  .btn-pdf-download {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 0;
+    background: var(--accent2);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: opacity .15s;
+  }
+  .btn-pdf-download:hover { opacity: .82; }
+  .btn-pdf-download svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .btn-armado {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 10px;
+    background: var(--accent-lt);
+    color: var(--accent);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    border: 1px solid var(--accent);
+    transition: opacity .15s;
+    white-space: nowrap;
+  }
+  .btn-armado:hover { opacity: .82; }
+  .btn-armado svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+  @media (max-width: 480px) {
+    .pdf-grid { grid-template-columns: 1fr; }
+  }
+
   /* ── Footer ───────────────────────────────────────────── */
   .footer {
     flex-shrink: 0;
@@ -949,6 +1112,133 @@
               Descargar
             </a>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── 7. PDFs listos para imprimir ─── -->
+    <div class="pdf-section" id="sec-pdfs">
+      <div class="pdf-section-header" onclick="toggleSection('sec-pdfs')">
+        <div class="pdf-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <span class="pdf-section-title">PDFs listos para imprimir</span>
+        <span class="section-meta">Archivos finales &bull; 5 archivos</span>
+        <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="pdf-section-body">
+        <div class="pdf-grid">
+
+          <!-- Línea de salida -->
+          <div class="pdf-card">
+            <div class="pdf-card-top">
+              <div class="pdf-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="pdf-card-info">
+                <div class="pdf-card-name">Línea de salida</div>
+                <div class="pdf-card-filename">Linea_de_salida.pdf</div>
+              </div>
+            </div>
+            <div class="pdf-card-badge">Requiere armado</div>
+            <div class="pdf-card-actions">
+              <a class="btn-pdf-download" href="Linea_de_salida.pdf" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                PDF
+              </a>
+              <a class="btn-armado" href="Linea_de_salida_armado.png" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
+                Armado
+              </a>
+            </div>
+          </div>
+
+          <!-- Punto de hidratación -->
+          <div class="pdf-card">
+            <div class="pdf-card-top">
+              <div class="pdf-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="pdf-card-info">
+                <div class="pdf-card-name">Punto de hidratación</div>
+                <div class="pdf-card-filename">Punto_de_hidratacion.pdf</div>
+              </div>
+            </div>
+            <div class="pdf-card-badge">Requiere armado</div>
+            <div class="pdf-card-actions">
+              <a class="btn-pdf-download" href="Punto_de_hidratacion.pdf" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                PDF
+              </a>
+              <a class="btn-armado" href="Punto_de_hidratacion_armado.png" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
+                Armado
+              </a>
+            </div>
+          </div>
+
+          <!-- Teatro -->
+          <div class="pdf-card">
+            <div class="pdf-card-top">
+              <div class="pdf-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="pdf-card-info">
+                <div class="pdf-card-name">Teatro</div>
+                <div class="pdf-card-filename">Teatro.pdf</div>
+              </div>
+            </div>
+            <div class="pdf-card-actions">
+              <a class="btn-pdf-download" href="Teatro.pdf" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                PDF
+              </a>
+            </div>
+          </div>
+
+          <!-- Medallas -->
+          <div class="pdf-card">
+            <div class="pdf-card-top">
+              <div class="pdf-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="pdf-card-info">
+                <div class="pdf-card-name">Medallas</div>
+                <div class="pdf-card-filename">Medallas.pdf</div>
+              </div>
+            </div>
+            <div class="pdf-card-actions">
+              <a class="btn-pdf-download" href="Medallas.pdf" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                PDF
+              </a>
+            </div>
+          </div>
+
+          <!-- Meta -->
+          <div class="pdf-card">
+            <div class="pdf-card-top">
+              <div class="pdf-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="pdf-card-info">
+                <div class="pdf-card-name">Meta</div>
+                <div class="pdf-card-filename">Meta.pdf</div>
+              </div>
+            </div>
+            <div class="pdf-card-badge">Requiere armado</div>
+            <div class="pdf-card-actions">
+              <a class="btn-pdf-download" href="Meta.pdf" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                PDF
+              </a>
+              <a class="btn-armado" href="Meta_armado.png" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
+                Armado
+              </a>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
